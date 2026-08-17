@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>A Little Place for You ♡</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&display=swap');
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:#4a2535;font-family:'DM Sans',sans-serif;background:
+radial-gradient(circle at 10% 5%,rgba(255,255,255,.9),transparent 25%),
+radial-gradient(circle at 90% 10%,rgba(255,190,214,.35),transparent 28%),
+linear-gradient(135deg,#fff7fa,#fde7ef 48%,#fff8f2);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:
+radial-gradient(circle,#fff 0 2px,transparent 3px);background-size:95px 95px;opacity:.38}
+.container{max-width:1320px;margin:auto;padding:22px 18px 70px;position:relative}
+.hero{min-height:390px;border-radius:38px;padding:54px 30px 42px;text-align:center;position:relative;overflow:hidden;
+background:linear-gradient(135deg,rgba(255,215,229,.94),rgba(255,247,242,.95));
+border:1px solid rgba(190,82,119,.15);box-shadow:0 28px 80px rgba(137,50,84,.15)}
+.hero:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-160px;bottom:-220px;background:rgba(255,255,255,.35)}
+.hero h1{font-family:'Great Vibes',cursive;font-size:clamp(58px,8vw,104px);font-weight:400;margin:5px 0;color:#76233f;line-height:1.05}
+.hero .sub{font-family:'Cormorant Garamond',serif;font-size:30px;color:#a33b61}
+.hero .quote{margin:20px auto 0;max-width:700px;font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;line-height:1.5}
+.heart{display:inline-block;animation:pulse 1.6s infinite;color:#c62f60;font-size:32px}
+@keyframes pulse{50%{transform:scale(1.25)}}
+.float{position:absolute;animation:float 7s ease-in-out infinite;opacity:.68;font-size:29px;z-index:2}
+@keyframes float{0%,100%{transform:translateY(24px) rotate(-8deg)}50%{transform:translateY(-34px) rotate(10deg)}}
+.spark{position:absolute;font-size:18px;animation:spark 3s infinite;opacity:.65}
+@keyframes spark{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}
+.nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0;position:sticky;top:10px;z-index:20}
+.nav button,.period button{border:0;border-radius:999px;padding:11px 18px;background:rgba(255,255,255,.92);
+box-shadow:0 8px 25px #b34b7018;color:#7c2948;font-weight:700;cursor:pointer;transition:.25s}
+.nav button.active,.nav button:hover,.period button.active{background:#b93260;color:white;transform:translateY(-2px);box-shadow:0 10px 25px #b9326040}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}
+.card,.panel{background:rgba(255,255,255,.79);border:1px solid rgba(255,255,255,.95);backdrop-filter:blur(12px);
+border-radius:25px;box-shadow:0 18px 55px rgba(109,40,68,.09)}
+.card{padding:20px}
+.stat .icon{font-size:29px}.stat .label{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#9b687a;margin-top:8px}
+.stat .value{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:#8b2e4f;margin-top:2px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:35px;color:#7b2947;margin:34px 0 12px}
+.panel{padding:22px}
+.period{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chartbox{height:390px;position:relative}
+.two{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.subject{padding:20px;border-radius:25px;background:linear-gradient(145deg,#fff,#fff0f4);border:1px solid #f4d3df;position:relative;overflow:hidden}
+.subject:after{content:"♡";position:absolute;right:12px;top:5px;font-size:70px;color:#f8dce5;transform:rotate(12deg)}
+.subject h3{margin:0 0 8px;color:#842d4d;font-family:'Cormorant Garamond',serif;font-size:28px}
+.mark{font-size:34px;font-weight:700;color:#b3315c}.small{font-size:13px;color:#936b7b}
+.progress{height:10px;background:#f4dce4;border-radius:99px;overflow:hidden;margin-top:10px}
+.bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#d04470,#f08ba9);transition:width .6s}
+.entry{display:grid;grid-template-columns:1.2fr 110px 120px 90px;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #f3e0e6}
+.entry:last-child{border:0}
+input,select{width:100%;border:1px solid #efd4dd;border-radius:12px;padding:10px;background:#fff;color:#5b3041;font:inherit}
+.action{border:0;border-radius:12px;padding:10px;background:#b93260;color:white;font-weight:700;cursor:pointer}
+.soft{background:#f7dfe7;color:#9b3157}
+.paper-list{margin-top:12px}
+.paper{display:grid;grid-template-columns:1.2fr 80px 80px 100px 40px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px dashed #ead1da}
+.paper:last-child{border:0}
+.subject-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.addpaper{margin-top:12px;border:0;border-radius:999px;padding:9px 14px;background:#fff;color:#a22e55;box-shadow:0 5px 16px #b34b7020;font-weight:700;cursor:pointer}
+.empty{padding:15px;text-align:center;color:#aa7b8b;background:#fff8fa;border-radius:15px}
+.secret{margin-top:35px;text-align:center;min-height:310px;display:flex;flex-direction:column;justify-content:center;
+background:linear-gradient(135deg,#6f203d,#a92f5a 55%,#d66e8f);color:white;overflow:hidden;position:relative}
+.secret:before,.secret:after{content:"♡";position:absolute;font-size:180px;color:rgba(255,255,255,.06)}
+.secret:before{left:-30px;top:-40px}.secret:after{right:-25px;bottom:-80px}
+.secret h2{font-family:'Great Vibes',cursive;font-size:60px;font-weight:400;margin:0 0 8px;position:relative;z-index:2}
+.secret p{max-width:680px;margin:10px auto;line-height:1.7;color:#ffeaf1;position:relative;z-index:2}
+.secret button{align-self:center;margin-top:15px;background:white;color:#8b2e4f;border:0;border-radius:999px;padding:13px 24px;font-weight:700;cursor:pointer;position:relative;z-index:2}
+.secret button:hover{transform:scale(1.04)}
+.secret .secret-note{font-family:'Great Vibes',cursive;font-size:32px;margin-top:18px;color:#fff;animation:appear .8s ease}
+@keyframes appear{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:none}}
+.love-dots{position:absolute;inset:0;pointer-events:none}
+.love-dots span{position:absolute;font-size:18px;animation:drift 6s infinite}
+@keyframes drift{0%{transform:translateY(30px);opacity:0}20%,70%{opacity:.8}100%{transform:translateY(-180px);opacity:0}}
+.footer{text-align:center;padding:35px 10px 0;color:#956c7d;font-family:'Cormorant Garamond',serif;font-size:20px}
+.hidden{display:none!important}
+.mini-note{padding:16px 18px;border-radius:20px;background:#fff5f8;border:1px solid #f3d6e0;margin-top:15px;color:#845267}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.three{grid-template-columns:1fr}}
+@media(max-width:700px){.paper{grid-template-columns:1fr 70px 70px 80px 35px}.entry{grid-template-columns:1fr 90px 90px 70px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr}.hero{padding:40px 18px}.hero h1{font-size:60px}.hero .sub{font-size:24px}.nav{top:5px}.chartbox{height:320px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="hero">
+<span class="float" style="left:8%;top:18%">♡</span><span class="float" style="right:10%;top:35%;animation-delay:1s">✦</span>
+<span class="float" style="left:15%;bottom:20%;animation-delay:2s">🌸</span><span class="float" style="right:17%;bottom:17%;animation-delay:3s">♡</span>
+<span class="spark" style="left:28%;top:22%">✦</span><span class="spark" style="right:28%;top:30%;animation-delay:1s">♡</span>
+<div class="heart">♥</div>
+<h1>A Little Place for You</h1>
+<div class="sub">Your little journey, one day at a time ♡</div>
+<p class="quote">“Some dreams are quietly built, one hour, one paper, one beautiful day at a time.”</p>
+</header>
+
+<div class="nav">
+<button class="active" onclick="show('dashboard',this)">♡ Dashboard</button>
+<button onclick="show('days',this)">🌷 Daily Log</button>
+<button onclick="show('subjects',this)">📚 Marks & Papers</button>
+<button onclick="show('love',this)">💌 Little Secret</button>
+</div>
+
+<section id="dashboard">
+<div class="grid">
+<div class="card stat"><div class="icon">⏰</div><div class="label">Total Study Time</div><div class="value" id="total">0h 00m</div></div>
+<div class="card stat"><div class="icon">🌸</div><div class="label">Average / Day</div><div class="value" id="avg">0h 00m</div></div>
+<div class="card stat"><div class="icon">🏆</div><div class="label">Best Day</div><div class="value" id="best">—</div></div>
+<div class="card stat"><div class="icon">💗</div><div class="label">Days Tracked</div><div class="value" id="count">0</div></div>
+</div>
+
+<h2 class="section-title">♡ Study Time — choose your view</h2>
+<div class="panel">
+<div class="period">
+<button class="active" onclick="setPeriod('7',this)">Last 7 Days</button>
+<button onclick="setPeriod('30',this)">Monthly · 30 Days</button>
+<button onclick="setPeriod('90',this)">90 Days</button>
+<button onclick="setPeriod('all',this)">Whole Journey</button>
+</div>
+<div class="chartbox"><canvas id="studyChart"></canvas></div>
+</div>
+
+<div class="two" style="margin-top:18px">
+<div class="panel"><h2 class="section-title" style="margin-top:0">🌙 Your Study Rhythm</h2><div class="chartbox" style="height:300px"><canvas id="weekChart"></canvas></div></div>
+<div class="panel"><h2 class="section-title" style="margin-top:0">✨ Little Numbers</h2>
+<p class="small">Most productive day</p><h2 id="bestFull" style="color:#9b3156">—</h2>
+<p class="small">Consistency</p><h2 id="consistency" style="color:#9b3156">—</h2>
+<p class="small">Papers recorded</p><h2 id="paperCount" style="color:#9b3156">0</h2>
+<p class="small">Every little hour counts. ♡</p></div>
+</div>
+
+<h2 class="section-title">📚 Marks at a glance</h2>
+<div class="three" id="subjectCards"></div>
+<div class="panel" style="margin-top:18px"><h2 class="section-title" style="margin-top:0">📈 Subject Performance</h2><div class="chartbox" style="height:330px"><canvas id="marksChart"></canvas></div></div>
+</section>
+
+<section id="days" class="hidden">
+<h2 class="section-title">🌷 Day by Day</h2>
+<div class="panel"><p class="small">Add or change a day's study time here. The graphs update automatically.</p><div id="entries"></div>
+<button class="action" onclick="addDay()" style="margin-top:14px">＋ Add another day</button></div>
+</section>
+
+<section id="subjects" class="hidden">
+<h2 class="section-title">📚 Biology · Physics · Chemistry</h2>
+<div class="three" id="subjectEditor"></div>
+<div class="panel" style="margin-top:20px"><h2 class="section-title" style="margin-top:0">📊 Paper-by-Paper Progress</h2>
+<p class="small">Each subject can have as many papers as you want. Add tests, term papers, practicals, mock exams, or any other paper. The percentage is calculated from your mark and maximum mark.</p>
+<div class="chartbox" style="height:360px"><canvas id="paperChart"></canvas></div></div>
+</section>
+
+<section id="love" class="hidden">
+<div class="panel secret">
+<div class="love-dots"><span style="left:15%;bottom:8%">♡</span><span style="left:28%;bottom:5%;animation-delay:1s">✦</span><span style="right:20%;bottom:3%;animation-delay:2s">♡</span><span style="right:34%;bottom:7%;animation-delay:3s">✧</span></div>
+<div style="font-size:28px;position:relative;z-index:2">♡ ✦ ♡</div>
+<h2>A tiny secret...</h2>
+<p>Not everything beautiful needs to be said loudly.<br>Some things can simply stay here, between the stars, the books and the little hours.</p>
+<button onclick="reveal()">Open the little secret</button>
+<div id="revealed" class="hidden secret-note">“I hope one day you realize…<br>this little place was made with you in mind.” ♥</div>
+</div>
+<div class="mini-note">🌙 A quiet reminder: the goal is not perfection. It's becoming a little stronger every day. ♡</div>
+</section>
+
+<div class="footer">Made quietly, with a little love between the lines. ♡</div>
+</div>
+
+<script>
+const SUBJECTS={
+ bio:{name:'Biology',icon:'🧬'}, phy:{name:'Physics',icon:'⚛️'}, chem:{name:'Chemistry',icon:'🧪'}
+};
+let data=JSON.parse(localStorage.getItem('studyData')||'null')||[
+ {date:'2026-08-09',hours:9},{date:'2026-08-10',hours:9.5},{date:'2026-08-11',hours:10.5},
+ {date:'2026-08-12',hours:6},{date:'2026-08-13',hours:8},{date:'2026-08-14',hours:4},{date:'2026-08-15',hours:11}
+];
+let marks=JSON.parse(localStorage.getItem('marks')||'null')||{
+ bio:[{name:'Paper 01',mark:0,max:100}],phy:[{name:'Paper 01',mark:0,max:100}],chem:[{name:'Paper 01',mark:0,max:100}]
+};
+let period='7',studyChart,weekChart,marksChart,paperChart;
+const $=id=>document.getElementById(id);
+
+function saveData(){data.sort((a,b)=>a.date.localeCompare(b.date));localStorage.setItem('studyData',JSON.stringify(data));renderAll()}
+function saveMarks(){localStorage.setItem('marks',JSON.stringify(marks));renderAll()}
+function fmt(h){let m=Math.round(h*60);return Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m'}
+function dateLabel(s){return new Date(s+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function pct(p){return p.max>0?Math.round((Number(p.mark)||0)/p.max*100):0}
+
+function renderStats(){
+ let total=data.reduce((s,x)=>s+Number(x.hours||0),0),avg=data.length?total/data.length:0;
+ let best=data.reduce((a,b)=>Number(b.hours)>Number(a.hours)?b:a,{hours:-1});
+ $('total').textContent=fmt(total);$('avg').textContent=fmt(avg);$('count').textContent=data.length+' days';
+ $('best').textContent=best.hours>=0?fmt(best.hours):'—';
+ $('bestFull').textContent=best.hours>=0?dateLabel(best.date)+' · '+fmt(best.hours):'—';
+ let active=data.filter(x=>Number(x.hours)>0).length;
+ $('consistency').textContent=data.length?Math.round(active/data.length*100)+'%':'—';
+ $('paperCount').textContent=Object.values(marks).reduce((s,a)=>s+a.length,0);
+}
+
+function renderChart(){
+ let arr=period==='all'?data:data.slice(-Number(period)),ctx=$('studyChart').getContext('2d');
+ if(studyChart)studyChart.destroy();
+ let grad=ctx.createLinearGradient(0,0,0,380);grad.addColorStop(0,'rgba(205,55,100,.34)');grad.addColorStop(1,'rgba(205,55,100,.02)');
+ studyChart=new Chart(ctx,{type:'line',data:{labels:arr.map(x=>dateLabel(x.date)),datasets:[{label:'Study hours',data:arr.map(x=>x.hours),borderColor:'#b93260',backgroundColor:grad,fill:true,tension:.4,pointRadius:6,pointHoverRadius:9,pointBackgroundColor:'#fff',pointBorderColor:'#b93260',pointBorderWidth:3}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>fmt(x.raw)}}},scales:{y:{beginAtZero:true,title:{display:true,text:'Hours'}},x:{grid:{display:false}}}}});
+}
+function renderWeek(){
+ let recent=data.slice(-7),ctx=$('weekChart').getContext('2d');if(weekChart)weekChart.destroy();
+ weekChart=new Chart(ctx,{type:'bar',data:{labels:recent.map(x=>dateLabel(x.date)),datasets:[{label:'Hours',data:recent.map(x=>x.hours),backgroundColor:'#d95a7d',borderRadius:12}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>fmt(x.raw)}}},scales:{y:{beginAtZero:true}}}});
+}
+function renderEntries(){
+ $('entries').innerHTML=data.map((x,i)=>`<div class="entry">
+ <input type="date" value="${x.date}" onchange="data[${i}].date=this.value;saveData()">
+ <input type="number" min="0" max="24" step=".5" value="${x.hours}" onchange="data[${i}].hours=Number(this.value);saveData()">
+ <span class="small">${fmt(Number(x.hours||0))}</span>
+ <button class="soft" style="border:0;border-radius:12px;padding:10px;cursor:pointer" onclick="data.splice(${i},1);saveData()">Delete</button></div>`).join('');
+}
+
+function subjectPercent(key){let a=marks[key]||[];if(!a.length)return 0;let totalMax=a.reduce((s,p)=>s+Number(p.max||0),0);let totalMark=a.reduce((s,p)=>s+Number(p.mark||0),0);return totalMax?Math.round(totalMark/totalMax*100):0}
+function renderSubjectCards(){
+ $('subjectCards').innerHTML=Object.entries(SUBJECTS).map(([k,s])=>{
+   let v=subjectPercent(k);
+   return `<div class="subject"><h3>${s.icon} ${s.name}</h3><div class="mark">${v}%</div><div class="small">${marks[k].length} paper${marks[k].length===1?'':'s'} recorded</div><div class="progress"><div class="bar" style="width:${v}%"></div></div></div>`;
+ }).join('');
+}
+function renderSubjectEditor(){
+ $('subjectEditor').innerHTML=Object.entries(SUBJECTS).map(([k,s])=>{
+   let papers=marks[k]||[];
+   return `<div class="subject">
+   <div class="subject-head"><h3>${s.icon} ${s.name}</h3><b style="color:#b3315c">${subjectPercent(k)}%</b></div>
+   <div class="paper-list">${papers.length?papers.map((p,i)=>paperRow(k,i,p)).join(''):`<div class="empty">No papers yet ♡</div>`}</div>
+   <button class="addpaper" onclick="addPaper('${k}')">＋ Add paper</button>
+   </div>`;
+ }).join('');
+}
+function paperRow(k,i,p){
+ return `<div class="paper">
+ <input value="${escapeHtml(p.name)}" onchange="marks['${k}'][${i}].name=this.value;saveMarks()">
+ <input type="number" min="0" value="${p.mark}" onchange="marks['${k}'][${i}].mark=Number(this.value);saveMarks()" title="Your mark">
+ <input type="number" min="1" value="${p.max}" onchange="marks['${k}'][${i}].max=Number(this.value);saveMarks()" title="Maximum mark">
+ <span style="font-weight:700;color:#9d3158">${pct(p)}%</span>
+ <button class="soft" style="border:0;border-radius:10px;padding:8px;cursor:pointer" onclick="marks['${k}'].splice(${i},1);saveMarks()">×</button>
+ </div>`;
+}
+function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function addPaper(k){marks[k].push({name:'New Paper',mark:0,max:100});saveMarks()}
+function renderMarksChart(){
+ let ctx=$('marksChart').getContext('2d');if(marksChart)marksChart.destroy();
+ marksChart=new Chart(ctx,{type:'bar',data:{labels:Object.values(SUBJECTS).map(s=>s.name),datasets:[{label:'Overall %',data:Object.keys(SUBJECTS).map(subjectPercent),backgroundColor:['#d95a7d','#c95a87','#b94f70'],borderRadius:14}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,title:{display:true,text:'Percentage'}}}}});
+}
+function renderPaperChart(){
+ let rows=[];
+ Object.entries(SUBJECTS).forEach(([k,s])=>{(marks[k]||[]).forEach((p,i)=>rows.push({label:s.name+' · '+p.name,score:pct(p)}))});
+ let ctx=$('paperChart').getContext('2d');if(paperChart)paperChart.destroy();
+ paperChart=new Chart(ctx,{type:'bar',data:{labels:rows.map(r=>r.label),datasets:[{label:'Paper %',data:rows.map(r=>r.score),backgroundColor:'#d95a7d',borderRadius:10}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,max:100,title:{display:true,text:'Percentage'}}}}});
+}
+function renderAll(){renderStats();renderChart();renderWeek();renderEntries();renderSubjectCards();renderSubjectEditor();renderMarksChart();renderPaperChart()}
+function setPeriod(p,b){period=p;document.querySelectorAll('.period button').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderChart()}
+function addDay(){let last=data[data.length-1];let d=last?new Date(last.date+'T00:00:00'):new Date();d.setDate(d.getDate()+1);data.push({date:d.toISOString().slice(0,10),hours:0});saveData()}
+function show(id,b){document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');window.scrollTo({top:350,behavior:'smooth'})}
+function reveal(){let r=$('revealed');r.classList.remove('hidden');document.querySelector('.secret').style.background='linear-gradient(135deg,#9b2c55,#e15d88,#6f203d)';for(let i=0;i<14;i++){let s=document.createElement('span');s.textContent=Math.random()>.4?'♡':'✦';s.style.cssText=`position:fixed;left:${10+Math.random()*80}%;bottom:10%;font-size:${16+Math.random()*18}px;color:#ffd8e5;z-index:99;animation:float ${3+Math.random()*3}s ease-out forwards;pointer-events:none`;document.body.appendChild(s);setTimeout(()=>s.remove(),6000)}}
+renderAll();
+</script>
+</body>
+</html>
