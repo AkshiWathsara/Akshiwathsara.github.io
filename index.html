@@ -1,69 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Your Little Study Space ♡</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Study Progress ♡</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-:root{--bg:#0b0712;--card:rgba(255,255,255,.075);--line:rgba(255,255,255,.1);--text:#fff;--muted:#b9aec5;--pink:#ff6fae;--purple:#8d7bff}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 10% 5%,#351640,transparent 35%),radial-gradient(circle at 90% 80%,#20185c,transparent 35%),var(--bg);color:var(--text);min-height:100vh}
-header{padding:38px 7% 20px;display:flex;justify-content:space-between;align-items:center}.brand{font-weight:800;letter-spacing:.08em}.tiny{color:var(--muted);font-size:.85rem}
-main{max-width:1200px;margin:auto;padding:20px 7% 70px}.hero{padding:38px 0 28px}.eyebrow{color:#ff9bc8;text-transform:uppercase;letter-spacing:.22em;font-size:.72rem}.hero h1{font-size:clamp(2.5rem,6vw,5rem);line-height:1;margin:12px 0;background:linear-gradient(90deg,#fff,#ff9bc8,#b8adff);-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:650px;line-height:1.7}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat,.panel,.subject{background:var(--card);border:1px solid var(--line);border-radius:24px;backdrop-filter:blur(18px);box-shadow:0 20px 70px rgba(0,0,0,.2)}.stat{padding:22px}.stat b{display:block;font-size:1.8rem;margin:8px 0}.stat span{color:var(--muted);font-size:.85rem}
-.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-top:18px}.panel{padding:22px}.panel h2{margin:0 0 18px;font-size:1.1rem}.chartbox{height:310px}.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.subject{padding:20px;position:relative;overflow:hidden}.subject:after{content:"";position:absolute;width:100px;height:100px;border-radius:50%;right:-40px;top:-40px;background:rgba(255,255,255,.08)}.icon{font-size:2rem}.subject h3{margin:10px 0 4px}.subject p{margin:0;color:var(--muted);font-size:.85rem}.bar{height:8px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:15px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:99px;transition:1s}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0}.controls input,.controls select,.controls button{border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:12px 14px;border-radius:14px}.controls button{cursor:pointer;background:linear-gradient(135deg,var(--pink),var(--purple));border:0}.recent{display:grid;gap:9px}.row{display:flex;justify-content:space-between;padding:13px;border-radius:14px;background:rgba(255,255,255,.045)}.row span{color:var(--muted)}footer{text-align:center;color:#81758d;padding:25px}
-@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.subjects{grid-template-columns:1fr}}@media(max-width:500px){header{padding:25px 5%}.cards{grid-template-columns:1fr 1fr}main{padding-left:5%;padding-right:5%}}
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap');
+:root{--ink:#5d1732;--rose:#b92d55;--pink:#f6c3ce;--cream:#fff5f2;--paper:#fffaf8;--line:#e7a9b6}
+*{box-sizing:border-box}body{margin:0;color:#4e2330;font-family:Poppins,sans-serif;background:linear-gradient(135deg,#f8d9dc,#fff1ed 48%,#f4c6d0);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:radial-gradient(#8d3a51 1px,transparent 1px);background-size:18px 18px}
+.wrap{max-width:1250px;margin:auto;padding:24px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 20px}.logo{font-family:Caveat;font-size:30px;color:var(--ink);font-weight:700}.mini{font-size:12px;color:#8b5967}
+.hero{position:relative;overflow:hidden;border-radius:34px;padding:55px 34px 35px;text-align:center;background:linear-gradient(180deg,#f9d8dc,#fff0ec);border:2px solid #fff;box-shadow:0 20px 55px #9e456122}
+.hero h1{font-family:'Playfair Display';font-size:clamp(40px,7vw,82px);margin:0;color:#4b1027;font-weight:600}.script{font-family:Caveat;font-size:31px;color:var(--rose);margin:5px}.hero p{max-width:680px;margin:10px auto 0;color:#754b59;line-height:1.7}
+.note{position:absolute;background:#fff6e8;padding:16px 18px;box-shadow:0 12px 25px #6c24301c;font-family:Caveat;font-size:22px;color:#632a39;transform:rotate(-4deg);width:170px;top:30px;left:25px}.note.right{left:auto;right:25px;transform:rotate(4deg)}.heart{color:#b51e4a;font-size:34px}
+.panel{margin-top:22px;background:rgba(255,250,248,.82);border:1px solid #fff;border-radius:28px;padding:24px;box-shadow:0 15px 45px #9e456116;backdrop-filter:blur(8px)}.title{font-family:'Playfair Display';font-size:24px;color:#5a1730;text-align:center;margin-bottom:16px}.chart{height:390px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:15px}.stat{background:#fff8f5;border:1px solid #efc3ca;border-radius:20px;padding:18px;text-align:center;box-shadow:0 8px 20px #9e45610d}.emoji{font-size:34px}.label{font-size:12px;color:#8d6871}.value{font-family:Caveat;font-size:30px;color:#a5224b;font-weight:700}.sub{font-size:11px;color:#8d6871}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.subject{background:linear-gradient(145deg,#fff9f7,#ffe8ec);border:1px solid #efc3ca;border-radius:22px;padding:18px;position:relative;overflow:hidden}.subject h3{font-family:'Playfair Display';margin:5px 0;color:#5d1732}.subject p{font-size:12px;color:#86616c}.meter{height:9px;background:#f1d4d9;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;background:linear-gradient(90deg,#d44b70,#8e294c);border-radius:20px}.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}.controls input,.controls select,.controls button{font:inherit;border:1px solid #e3b2bc;border-radius:13px;padding:11px 12px;background:#fff8f7;color:#5d1732}.controls button{background:#a9274e;color:white;border:0;cursor:pointer}.recent{display:grid;gap:8px}.row{display:flex;justify-content:space-between;background:#fff6f3;border:1px solid #f0d0d5;padding:12px;border-radius:14px;font-size:13px}.row span{color:#8c6872}
+.quote{font-family:Caveat;text-align:center;font-size:30px;color:#6d293e;padding:28px}.footer{text-align:center;font-family:Caveat;font-size:22px;color:#8c5363;padding:25px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.subjects{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.note{display:none}}@media(max-width:560px){.wrap{padding:12px}.stats{grid-template-columns:1fr 1fr}.hero{padding:38px 20px}.chart{height:310px}.top{padding-bottom:8px}}
 </style>
 </head>
 <body>
-<header><div class="brand">JUST FOR YOU ♡</div><div class="tiny">A little study space</div></header>
-<main>
-<section class="hero"><div class="eyebrow">Biology · Physics · Chemistry</div><h1>Keep going, you're doing amazing ♡</h1><p>Every hour you put in today is building the future you're dreaming about. This little dashboard keeps your study journey in one beautiful place.</p></section>
+<div class="wrap">
+<header class="top"><div class="logo">My Study Progress ♡</div><div class="mini">a little place for big dreams ✦</div></header>
 
-<div class="cards">
-<div class="stat"><span>Study this week</span><b id="totalHours">0h</b><span>All three subjects</span></div>
-<div class="stat"><span>Study streak</span><b>7 🔥</b><span>Keep it going</span></div>
-<div class="stat"><span>Weekly goal</span><b>68%</b><span>of 60 hours</span></div>
-<div class="stat"><span>Average mark</span><b>85%</b><span>Current subjects</span></div>
+<section class="hero">
+<div class="note">One day, these efforts will speak for the dreams I chase quietly. ♡</div>
+<div class="note right">Small steps today,<br>stronger me tomorrow. ✦</div>
+<div class="heart">♡</div>
+<div class="script">Daily Study Time Tracking</div>
+<h1>My Study Progress</h1>
+<p>Every little hour matters. Keep going, keep believing, and let your future self be proud of you. ♡</p>
+</section>
+
+<section class="panel">
+<div class="title">♡ Daily Study Hours ♡</div>
+<div class="chart"><canvas id="hoursChart"></canvas></div>
+</section>
+
+<div class="stats">
+<div class="stat"><div class="emoji">⏰</div><div class="label">Total Study Time</div><div class="value" id="total">0h</div><div class="sub">Every hour counts ♡</div></div>
+<div class="stat"><div class="emoji">📚</div><div class="label">Average per Day</div><div class="value" id="avg">0h</div><div class="sub">Consistency today, success tomorrow.</div></div>
+<div class="stat"><div class="emoji">🏆</div><div class="label">Best Day</div><div class="value" id="best">0h</div><div class="sub" id="bestDate">Keep going ♡</div></div>
+<div class="stat"><div class="emoji">🗓️</div><div class="label">Days Tracked</div><div class="value">7 Days</div><div class="sub">One step at a time.</div></div>
+<div class="stat"><div class="emoji">💗</div><div class="label">Progress</div><div class="value">Improving</div><div class="sub">Proud of you ♡</div></div>
 </div>
 
+<section class="panel">
+<div class="title">♡ Add Today's Study ♡</div>
 <div class="controls">
-<select id="period"><option>Last 7 days</option><option>Last 30 days</option></select>
-<input id="subject" placeholder="Subject">
-<input id="hours" type="number" min="0" step=".25" placeholder="Hours studied">
-<button onclick="addSession()">+ Add study session</button>
+<select id="sub"><option>Biology</option><option>Physics</option><option>Chemistry</option></select>
+<input id="hrs" type="number" min="0" step=".5" placeholder="Hours">
+<button onclick="addStudy()">Add Study Time ♡</button>
 </div>
+</section>
 
 <div class="grid">
-<div class="panel"><h2>📈 Study time</h2><div class="chartbox"><canvas id="studyChart"></canvas></div></div>
-<div class="panel"><h2>📝 Marks</h2><div class="chartbox"><canvas id="marksChart"></canvas></div></div>
-</div>
-
+<section class="panel"><div class="title">♡ Subject Progress ♡</div>
 <div class="subjects">
-<div class="subject"><div class="icon">🧬</div><h3>Biology</h3><p>Study: 18.5h · Average: 88%</p><div class="bar"><div class="fill" style="width:88%"></div></div></div>
-<div class="subject"><div class="icon">⚛️</div><h3>Physics</h3><p>Study: 15.2h · Average: 79%</p><div class="bar"><div class="fill" style="width:79%"></div></div></div>
-<div class="subject"><div class="icon">🧪</div><h3>Chemistry</h3><p>Study: 17.1h · Average: 87%</p><div class="bar"><div class="fill" style="width:87%"></div></div></div>
+<div class="subject"><div style="font-size:32px">🧬</div><h3>Biology</h3><p>Average mark · <b>88%</b></p><div class="meter"><i style="width:88%"></i></div></div>
+<div class="subject"><div style="font-size:32px">⚛️</div><h3>Physics</h3><p>Average mark · <b>79%</b></p><div class="meter"><i style="width:79%"></i></div></div>
+<div class="subject"><div style="font-size:32px">🧪</div><h3>Chemistry</h3><p>Average mark · <b>87%</b></p><div class="meter"><i style="width:87%"></i></div></div>
+</div></section>
+<section class="panel"><div class="title">♡ Marks ♡</div><div class="chart" style="height:260px"><canvas id="marksChart"></canvas></div></section>
 </div>
 
-<div class="panel" style="margin-top:18px"><h2>♡ Recent study</h2><div class="recent" id="recent">
-<div class="row"><strong>Biology</strong><span>2h 30m · Today</span></div>
-<div class="row"><strong>Physics</strong><span>1h 45m · Today</span></div>
-<div class="row"><strong>Chemistry</strong><span>2h 00m · Yesterday</span></div>
-</div></div>
-</main>
-<footer>Made with care for someone special ♡</footer>
+<section class="panel"><div class="title">♡ Recent Study ♡</div><div id="recent" class="recent">
+<div class="row"><b>Biology</b><span>2h 30m · Today</span></div>
+<div class="row"><b>Physics</b><span>1h 45m · Today</span></div>
+<div class="row"><b>Chemistry</b><span>2h 00m · Yesterday</span></div>
+</div></section>
+
+<section class="panel quote">“Not every reason is told out loud.<br>Some are just between the heart and the hard work.” ♡</section>
+<div class="footer">Made with a little love, for someone with big dreams. ♡</div>
+</div>
 
 <script>
-let sessions=JSON.parse(localStorage.getItem("studySessions")||"[]");
-const labels=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-const studyData=[6.5,8,5.5,7,9,4.5,8];
-const marks=[88,79,87];
-const common={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"#ddd"}}},scales:{x:{ticks:{color:"#aaa"},grid:{color:"rgba(255,255,255,.06)"}},y:{ticks:{color:"#aaa"},grid:{color:"rgba(255,255,255,.06)"}}}};
-new Chart(document.getElementById("studyChart"),{type:"line",data:{labels,datasets:[{label:"Hours",data:studyData,borderColor:"#ff78b4",backgroundColor:"rgba(255,120,180,.12)",fill:true,tension:.4,pointRadius:4}]},options:common});
-new Chart(document.getElementById("marksChart"),{type:"bar",data:{labels:["Biology","Physics","Chemistry"],datasets:[{label:"Mark %",data:marks,backgroundColor:["#ff78b4","#8d7bff","#b99cff"],borderRadius:10}]},options:{...common,scales:{...common.scales,y:{...common.scales.y,min:0,max:100}}}});
-function addSession(){const s=document.getElementById("subject").value.trim();const h=Number(document.getElementById("hours").value);if(!s||!h)return alert("Enter a subject and study hours.");sessions.unshift({s,h,date:new Date().toLocaleDateString()});localStorage.setItem("studySessions",JSON.stringify(sessions));render();document.getElementById("subject").value="";document.getElementById("hours").value=""}
-function render(){const total=sessions.reduce((a,x)=>a+x.h,68.8);document.getElementById("totalHours").textContent=total.toFixed(1)+"h";const el=document.getElementById("recent");sessions.slice(0,6).forEach(x=>{el.insertAdjacentHTML("afterbegin",`<div class="row"><strong>${x.s}</strong><span>${x.h}h · ${x.date}</span></div>`)});}
-render();
+const base=[9,9.5,10.5,6,8,4,11];
+const dates=["Aug 9","Aug 10","Aug 11","Aug 12","Aug 13","Aug 14","Aug 15"];
+let saved=JSON.parse(localStorage.getItem("lovelyStudy")||"[]");
+const ctx=document.getElementById("hoursChart");
+new Chart(ctx,{type:"line",data:{labels:dates,datasets:[{label:"Study Hours",data:base,borderColor:"#b92750",backgroundColor:"rgba(220,90,120,.18)",fill:true,tension:.38,pointRadius:8,pointBackgroundColor:"#fff8f5",pointBorderColor:"#b92750",pointBorderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:14,title:{display:true,text:"Hours",color:"#7b3d50"},ticks:{color:"#805666"},grid:{color:"rgba(170,70,90,.12)"}},x:{ticks:{color:"#6e4050"},grid:{display:false}}}}});
+new Chart(document.getElementById("marksChart"),{type:"doughnut",data:{labels:["Biology","Physics","Chemistry"],datasets:[{data:[88,79,87],backgroundColor:["#d95476","#9b72c9","#e0a06d"],borderColor:"#fff8f5",borderWidth:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:"63%",plugins:{legend:{position:"bottom",labels:{color:"#68404d",padding:14}}}}});
+function refresh(){const added=saved.reduce((a,x)=>a+x.h,0),total=58+added;document.getElementById("total").textContent=Math.floor(total)+"h "+Math.round((total%1)*60)+"m";document.getElementById("avg").textContent=(total/7).toFixed(1)+"h";let best=Math.max(...base);document.getElementById("best").textContent=best+"h";document.getElementById("bestDate").textContent="Aug 15 · best day";const r=document.getElementById("recent");saved.slice(-5).reverse().forEach(x=>r.insertAdjacentHTML("afterbegin",`<div class="row"><b>${x.s}</b><span>${x.h}h · Today</span></div>`))}
+function addStudy(){const s=document.getElementById("sub").value,h=Number(document.getElementById("hrs").value);if(!h)return; saved.push({s,h});localStorage.setItem("lovelyStudy",JSON.stringify(saved));refresh();document.getElementById("hrs").value=""}
+refresh();
 </script>
 </body>
 </html>
